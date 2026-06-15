@@ -20,7 +20,7 @@
 
 <item itemtype="Tunnel" CircId="Tunnel-232" mainComp="false" Show_id="false" Show_Val="false" Pos="100,-56" rotation="90" hflip="1" vflip="1" idLabPos="-34,10" labelrot="0" valLabPos="-16,20" valLabRot="0" Name="D0" />
 
-<item itemtype="MCU" CircId="mega328-22" mainComp="false" Show_id="true" Show_Val="false" Pos="-104,64" rotation="0" hflip="1" vflip="1" label="Atmega328" idLabPos="-10,-14" labelrot="0" valLabPos="-16,20" valLabRot="0" Frequency="16 MHz" Program="main.hex" Auto_Load="true" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" />
+<item itemtype="MCU" CircId="mega328-22" mainComp="false" Show_id="true" Show_Val="false" Pos="-104,64" rotation="0" hflip="1" vflip="1" label="Atmega328" idLabPos="-10,-14" labelrot="0" valLabPos="-16,20" valLabRot="0" Frequency="16 MHz" Program="../src/main.hex" Auto_Load="true" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" />
 
 <item itemtype="Tunnel" CircId="Tunnel-117" mainComp="false" Show_id="true" Show_Val="false" Pos="-120,136" rotation="360" hflip="1" vflip="1" label="Display7Seg-a" idLabPos="-85,32" labelrot="0" valLabPos="-16,20" valLabRot="0" Name="B6" />
 
@@ -58,7 +58,7 @@
 
 <item itemtype="Resistor" CircId="Resistor-365" mainComp="false" ShowProp="Resistance" Show_id="true" Show_Val="true" Pos="116,40" rotation="90" hflip="1" vflip="1" label="Carga" idLabPos="-12,-33" labelrot="0" valLabPos="-10,-19" valLabRot="0" Resistance="100 Ω" />
 
-<item itemtype="TextComponent" CircId="TextComponent-582" mainComp="false" Show_id="true" Show_Val="false" Pos="-520,-160" rotation="0" hflip="1" vflip="1" label="Controle de Ventilador por Temperatura" idLabPos="16.6485,-44.2134" labelrot="0" valLabPos="-16,20" valLabRot="0" Margin="5 _Pixels" Border="1 _Pixels" Opacity="1" Font="Helvetica [Cronyx]" Font_Size="10 _Pixels" Fixed_Width="true" Text="Projeto Final MATA49 - T2&#xa;Programação de Software Básico&#xa;Equipe:&#xa;Gabriel Silva Carvalho&#xa;Leonardo de Andrade Porto" />
+<item itemtype="TextComponent" CircId="TextComponent-582" mainComp="false" Show_id="true" Show_Val="false" Pos="-520,-160" rotation="0" hflip="1" vflip="1" label="Controle de Ventilador por Temperatura" idLabPos="16,-44" labelrot="0" valLabPos="-16,20" valLabRot="0" Margin="5 _Pixels" Border="1 _Pixels" Opacity="1" Font="Helvetica [Cronyx]" Font_Size="10 _Pixels" Fixed_Width="true" Text="Projeto Final MATA49 - T2&#xa;Programação de Software Básico&#xa;Equipe:&#xa;Gabriel Silva Carvalho&#xa;Leonardo de Andrade Porto&#xa;Davi Reis&#xa;Davi" />
 
 <item itemtype="Ground" CircId="Ground-217" mainComp="false" Show_id="false" Show_Val="false" Pos="100,108" rotation="0" hflip="1" vflip="1" label="Ground-217" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 
@@ -74,68 +74,68 @@
 
 <item itemtype="Tunnel" CircId="Tunnel-120" mainComp="false" Show_id="true" Show_Val="false" Pos="-56,160" rotation="360" hflip="-1" vflip="1" label="Display7Seg-d" idLabPos="-21,-6" labelrot="0" valLabPos="-16,20" valLabRot="0" Name="B3" />
 
-<item itemtype="Connector" uid="connector-618" startpinid="Tunnel-115-pin" endpinid="mega328-22-PORTB2" pointList="-56,168,-64,168" />
+<item itemtype="Connector" uid="connector-583" startpinid="Tunnel-115-pin" endpinid="mega328-22-PORTB2" pointList="-56,168,-64,168" />
 
-<item itemtype="Connector" uid="connector-619" startpinid="Tunnel-232-pin" endpinid="RelaySPST-182-inductor-lPin" pointList="100,-56,100,-24" />
+<item itemtype="Connector" uid="connector-584" startpinid="Tunnel-232-pin" endpinid="RelaySPST-182-inductor-lPin" pointList="100,-56,100,-24" />
 
-<item itemtype="Connector" uid="connector-620" startpinid="Tunnel-99-pin" endpinid="Seven Segment-90-pin_c" pointList="-160,-44,-148,-44" />
+<item itemtype="Connector" uid="connector-585" startpinid="Tunnel-99-pin" endpinid="Seven Segment-90-pin_c" pointList="-160,-44,-148,-44" />
 
-<item itemtype="Connector" uid="connector-621" startpinid="Resistor-365-lPin" endpinid="RelaySPST-182-switch0pinN" pointList="116,24,116,8" />
+<item itemtype="Connector" uid="connector-586" startpinid="Resistor-365-lPin" endpinid="RelaySPST-182-switch0pinN" pointList="116,24,116,8" />
 
-<item itemtype="Connector" uid="connector-622" startpinid="Tunnel-102-pin" endpinid="Seven Segment-90-pin_f" pointList="-160,-20,-148,-20" />
+<item itemtype="Connector" uid="connector-587" startpinid="Tunnel-102-pin" endpinid="Seven Segment-90-pin_f" pointList="-160,-20,-148,-20" />
 
-<item itemtype="Connector" uid="connector-623" startpinid="RelaySPST-182-inductor-rPin" endpinid="Ground-217-Gnd" pointList="100,8,100,92" />
+<item itemtype="Connector" uid="connector-588" startpinid="RelaySPST-182-inductor-rPin" endpinid="Ground-217-Gnd" pointList="100,8,100,92" />
 
-<item itemtype="Connector" uid="connector-624" startpinid="Tunnel-98-pin" endpinid="Seven Segment-90-pin_b" pointList="-160,-52,-148,-52" />
+<item itemtype="Connector" uid="connector-589" startpinid="Tunnel-98-pin" endpinid="Seven Segment-90-pin_b" pointList="-160,-52,-148,-52" />
 
-<item itemtype="Connector" uid="connector-625" startpinid="Tunnel-465-pin" endpinid="Seven Segment-90-pin_commonb" pointList="-84,4,-84,-4" />
+<item itemtype="Connector" uid="connector-590" startpinid="Tunnel-465-pin" endpinid="Seven Segment-90-pin_commonb" pointList="-84,4,-84,-4" />
 
-<item itemtype="Connector" uid="connector-626" startpinid="Tunnel-520-pin" endpinid="mega328-22-PORTC3" pointList="-56,88,-64,88" />
+<item itemtype="Connector" uid="connector-591" startpinid="Tunnel-520-pin" endpinid="mega328-22-PORTC3" pointList="-56,88,-64,88" />
 
-<item itemtype="Connector" uid="connector-627" startpinid="Tunnel-353-pin" endpinid="mega328-22-PORTB7" pointList="-120,144,-112,144" />
+<item itemtype="Connector" uid="connector-592" startpinid="Tunnel-353-pin" endpinid="mega328-22-PORTB7" pointList="-120,144,-112,144" />
 
-<item itemtype="Connector" uid="connector-628" startpinid="Tunnel-117-pin" endpinid="mega328-22-PORTB6" pointList="-120,136,-112,136" />
+<item itemtype="Connector" uid="connector-593" startpinid="Tunnel-117-pin" endpinid="mega328-22-PORTB6" pointList="-120,136,-112,136" />
 
-<item itemtype="Connector" uid="connector-629" startpinid="Tunnel-580-pin" endpinid="Seven Segment-90-pin_commond" pointList="-20,4,-20,-4" />
+<item itemtype="Connector" uid="connector-594" startpinid="Tunnel-580-pin" endpinid="Seven Segment-90-pin_commond" pointList="-20,4,-20,-4" />
 
-<item itemtype="Connector" uid="connector-630" startpinid="Tunnel-119-pin" endpinid="mega328-22-PORTB5" pointList="-56,144,-64,144" />
+<item itemtype="Connector" uid="connector-595" startpinid="Tunnel-119-pin" endpinid="mega328-22-PORTB5" pointList="-56,144,-64,144" />
 
-<item itemtype="Connector" uid="connector-631" startpinid="Tunnel-113-pin" endpinid="mega328-22-PORTB1" pointList="-56,176,-64,176" />
+<item itemtype="Connector" uid="connector-596" startpinid="Tunnel-113-pin" endpinid="mega328-22-PORTB1" pointList="-56,176,-64,176" />
 
-<item itemtype="Connector" uid="connector-632" startpinid="Tunnel-363-pin" endpinid="Dht22-5-inPin" pointList="-292,8,-292,0" />
+<item itemtype="Connector" uid="connector-597" startpinid="Tunnel-363-pin" endpinid="Dht22-5-inPin" pointList="-292,8,-292,0" />
 
-<item itemtype="Connector" uid="connector-633" startpinid="Tunnel-357-pin" endpinid="Seven Segment-90-pin_dot" pointList="-132,4,-132,-4" />
+<item itemtype="Connector" uid="connector-598" startpinid="Tunnel-357-pin" endpinid="Seven Segment-90-pin_dot" pointList="-132,4,-132,-4" />
 
-<item itemtype="Connector" uid="connector-634" startpinid="Resistor-365-rPin" endpinid="Ground-516-Gnd" pointList="116,56,116,92" />
+<item itemtype="Connector" uid="connector-599" startpinid="Resistor-365-rPin" endpinid="Ground-516-Gnd" pointList="116,56,116,92" />
 
-<item itemtype="Connector" uid="connector-635" startpinid="Tunnel-120-pin" endpinid="mega328-22-PORTB3" pointList="-56,160,-64,160" />
+<item itemtype="Connector" uid="connector-600" startpinid="Tunnel-120-pin" endpinid="mega328-22-PORTB3" pointList="-56,160,-64,160" />
 
-<item itemtype="Connector" uid="connector-636" startpinid="Tunnel-522-pin" endpinid="Seven Segment-90-pin_commonc" pointList="-52,4,-52,-4" />
+<item itemtype="Connector" uid="connector-601" startpinid="Tunnel-522-pin" endpinid="Seven Segment-90-pin_commonc" pointList="-52,4,-52,-4" />
 
-<item itemtype="Connector" uid="connector-637" startpinid="Tunnel-103-pin" endpinid="Seven Segment-90-pin_g" pointList="-160,-12,-148,-12" />
+<item itemtype="Connector" uid="connector-602" startpinid="Tunnel-103-pin" endpinid="Seven Segment-90-pin_g" pointList="-160,-12,-148,-12" />
 
-<item itemtype="Connector" uid="connector-638" startpinid="mega328-22-PORTC2" endpinid="Tunnel-518-pin" pointList="-64,96,-56,96" />
+<item itemtype="Connector" uid="connector-603" startpinid="mega328-22-PORTC2" endpinid="Tunnel-518-pin" pointList="-64,96,-56,96" />
 
-<item itemtype="Connector" uid="connector-639" startpinid="Tunnel-243-pin" endpinid="mega328-22-PORTC0" pointList="-56,112,-64,112" />
+<item itemtype="Connector" uid="connector-604" startpinid="Tunnel-243-pin" endpinid="mega328-22-PORTC0" pointList="-56,112,-64,112" />
 
-<item itemtype="Connector" uid="connector-640" startpinid="WaveGen-222-outnod" endpinid="RelaySPST-182-pinP2" pointList="116,-28,116,-24" />
+<item itemtype="Connector" uid="connector-605" startpinid="WaveGen-222-outnod" endpinid="RelaySPST-182-pinP2" pointList="116,-28,116,-24" />
 
-<item itemtype="Connector" uid="connector-642" startpinid="Tunnel-111-pin" endpinid="mega328-22-PORTB0" pointList="-120,176,-112,176" />
+<item itemtype="Connector" uid="connector-606" startpinid="Tunnel-111-pin" endpinid="mega328-22-PORTB0" pointList="-120,176,-112,176" />
 
-<item itemtype="Connector" uid="connector-643" startpinid="Tunnel-118-pin" endpinid="mega328-22-PORTB4" pointList="-56,152,-64,152" />
+<item itemtype="Connector" uid="connector-607" startpinid="Tunnel-118-pin" endpinid="mega328-22-PORTB4" pointList="-56,152,-64,152" />
 
-<item itemtype="Connector" uid="connector-644" startpinid="Tunnel-101-pin" endpinid="Seven Segment-90-pin_e" pointList="-160,-28,-148,-28" />
+<item itemtype="Connector" uid="connector-608" startpinid="Tunnel-101-pin" endpinid="Seven Segment-90-pin_e" pointList="-160,-28,-148,-28" />
 
-<item itemtype="Connector" uid="connector-645" startpinid="Tunnel-367-pin" endpinid="mega328-22-PORTC1" pointList="-56,104,-64,104" />
+<item itemtype="Connector" uid="connector-609" startpinid="Tunnel-367-pin" endpinid="mega328-22-PORTC1" pointList="-56,104,-64,104" />
 
-<item itemtype="Connector" uid="connector-646" startpinid="Tunnel-100-pin" endpinid="Seven Segment-90-pin_d" pointList="-160,-36,-148,-36" />
+<item itemtype="Connector" uid="connector-610" startpinid="Tunnel-100-pin" endpinid="Seven Segment-90-pin_d" pointList="-160,-36,-148,-36" />
 
-<item itemtype="Connector" uid="connector-647" startpinid="Tunnel-524-pin" endpinid="mega328-22-PORTC4" pointList="-56,80,-64,80" />
+<item itemtype="Connector" uid="connector-611" startpinid="Tunnel-524-pin" endpinid="mega328-22-PORTC4" pointList="-56,80,-64,80" />
 
-<item itemtype="Connector" uid="connector-648" startpinid="Tunnel-97-pin" endpinid="Seven Segment-90-pin_a" pointList="-160,-60,-148,-60" />
+<item itemtype="Connector" uid="connector-612" startpinid="Tunnel-97-pin" endpinid="Seven Segment-90-pin_a" pointList="-160,-60,-148,-60" />
 
-<item itemtype="Connector" uid="connector-649" startpinid="Tunnel-272-pin" endpinid="mega328-22-PORTD0" pointList="-120,80,-112,80" />
+<item itemtype="Connector" uid="connector-613" startpinid="Tunnel-272-pin" endpinid="mega328-22-PORTD0" pointList="-120,80,-112,80" />
 
-<item itemtype="Connector" uid="connector-641" startpinid="Tunnel-415-pin" endpinid="Seven Segment-90-pin_commona" pointList="-116,4,-116,-4" />
+<item itemtype="Connector" uid="connector-614" startpinid="Tunnel-415-pin" endpinid="Seven Segment-90-pin_commona" pointList="-116,4,-116,-4" />
 
 </circuit>
