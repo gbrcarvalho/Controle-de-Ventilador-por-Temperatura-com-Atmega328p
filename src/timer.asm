@@ -7,11 +7,11 @@
 CONTADOR_SEGUNDOS: .BYTE 1 ; armazena os segundos passados
 FLAG_DHT:          .BYTE 1 ; flag indicando o momento de ler o DHT
 
-.CSEG
-
 ; =========================================================
 ; ROTINA DE INICIALIZAÇÃO DO TIMER1
 ; =========================================================
+
+.CSEG
 
 Timer1_Init:
 

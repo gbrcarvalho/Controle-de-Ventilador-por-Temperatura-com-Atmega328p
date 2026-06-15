@@ -38,3 +38,6 @@ OUT SREG, R20         ; carrega valor salvo em R20
 SEC - set carry, C <- 1
 ROR - rotate right through carry
 LSR - logical shift right
+
+STS var, AUX          ; escreve o conteudo de AUX em var na sram (var é uma variavel que foi definida anteriormente)
+LDS AUX, var          ; lê var da sram no registrador AUX (var é uma variavel que foi definida anteriormente)

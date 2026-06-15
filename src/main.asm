@@ -45,9 +45,9 @@ Inicio:
     RCALL Timer1_Init
 
 Main:
-    MOV DIG1, DEZENA ;; teste
-    MOV DIG2, UNIDADE ;; teste
-    MOV DIG3, DECIMO ;; teste
+    STS digi_1, DEZENA
+    STS digi_2, UNIDADE
+    STS digi_3, DECIMO
 
     RCALL Exibe_Display
 

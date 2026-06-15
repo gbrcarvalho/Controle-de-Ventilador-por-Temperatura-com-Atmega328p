@@ -1,8 +1,21 @@
+; =========================================================
+; VARIÁVEIS NA SRAM
+; =========================================================
+
+.DSEG
+
+digi_1: .BYTE 1
+digi_2: .BYTE 1
+digi_3: .BYTE 1
+
+.CSEG
+
 Inicializa_Display:
     ; Inicializando Digitos (os displays mostram DIG1 DIG2. DIG3 C)
-    LDI DIG1, 0
-    LDI DIG2, 0
-    LDI DIG3, 0
+    LDI AUX, 0
+    STS digi_1, AUX
+    STS digi_2, AUX
+    STS digi_3, AUX
 
     ; Configurando Saídas
     LDI AUX, 0xff
@@ -23,21 +36,22 @@ Exibe_Display:
     ;====MOSTRANDO DIGITOS====
     ;   Cada bloco de código faz o seguinte processo: Carrega o digito em aux -> define CNTRL para ligar apenas o display daquele digito, chama decod, chama Desliga_ponto (com exeção de após o digito 2) -> Mostra na tela -> atrasa
     ;=========================
-    MOV AUX, DIG1
+
+    LDS AUX, digi_1
     LDI CNTRL, DIG1_EN
     RCALL Decod
     RCALL Desliga_ponto
     RCALL Mostra
     RCALL Atraso
 
-    MOV AUX, DIG2
+    LDS AUX, digi_2
     LDI CNTRL, DIG2_EN
     RCALL Decod
     ;RCALL Desliga_ponto
     RCALL Mostra
     RCALL Atraso
 
-    MOV AUX, DIG3
+    LDS AUX, digi_3
     LDI CNTRL, DIG3_EN
     RCALL Decod
     RCALL Desliga_ponto

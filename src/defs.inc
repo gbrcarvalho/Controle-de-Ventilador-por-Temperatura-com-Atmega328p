@@ -1,15 +1,14 @@
-; =============DEFINIÇÕES DISPLAY==============================================
+; =============DEFINIÇÕES GERAIS==============================================
+
 .def AUX = R16
-.def DIG1 = R17
-.def DIG2 = R18
-.def DIG3 = R19
+.def TEMP = R17
+
+; =============DEFINIÇÕES DISPLAY==============================================
 .def CNTRL = R20
 
 .def ATRASO1 = R21
 .def ATRASO2 = R22
 .def ATRASO3 = R23
-
-.def TEMP = R28
 
 .equ SYMB_CELS = 0x0C         ; define o simbolo que representa a grandeza fisica
 
