@@ -12,14 +12,7 @@
 ; --------------------------------------------
 
 .include "m328Pdef.inc"
-.include "defs_display.inc"
-.include "defs_timer.inc"
-
-; teste
-.def DECIMO = R24
-.def UNIDADE = R25
-.def DEZENA = R26
-;
+.include "defs.inc"
 
 RJMP Inicio
 
@@ -92,8 +85,8 @@ zera:
 
 inverte_portd0:
     IN   AUX, PORTD
-    LDI  R28, 1
-    EOR  AUX, R28
+    LDI  TEMP, 1
+    EOR  AUX, TEMP
     OUT  PORTD, AUX
     LDI  AUX, 0
     STS  FLAG_DHT, AUX

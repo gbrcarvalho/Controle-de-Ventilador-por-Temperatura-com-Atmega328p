@@ -84,15 +84,15 @@ Mostra:
     RET
 
 Atraso:
-    LDI R21, 0
-    LDI R22, 0
-    LDI R23, 1
-    volta:
-    DEC R21
+    LDI ATRASO1, 0
+    LDI ATRASO2, 0
+    LDI ATRASO3, 1
+volta:
+    DEC ATRASO1
     BRNE volta
-    DEC R22
+    DEC ATRASO2
     BRNE volta
-    DEC R23
+    DEC ATRASO3
     BRNE volta
     RET
 
