@@ -35,8 +35,9 @@ Inicio:
     LDI AUX, LOW(RAMEND)
     OUT SPL, AUX
 
-    LDI AUX, 0x01
+    LDI AUX, 0xFF
     OUT DDRD, AUX
+    LDI AUX, 0x01
     OUT PORTD, AUX
 
     LDI DECIMO, 0 ; valor que será incrementado continuamente - teste
@@ -46,6 +47,14 @@ Inicio:
     RCALL Timer1_Init
 
     RCALL DHT11_Start
+    RCALL DHT11_CheckResponse
+
+    CPI R24, 1
+    BREQ Main
+
+    IN AUX, PORTD
+    ORI AUX, (1 << PD1)
+    OUT PORTD, AUX
 
 Main:
     STS digi_1, DEZENA

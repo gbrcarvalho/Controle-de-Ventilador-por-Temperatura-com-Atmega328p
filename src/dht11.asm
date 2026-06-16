@@ -1,10 +1,5 @@
 ; ==================================================================
 ; dht11.asm — Driver DHT11 em Assembly AVR (ATmega328P)
-;
-; registradores:
-;   AUX–r23  registradores de trabalho
-;   r24:r25  retorno de funções de 16 bits (quando necessário)
-;   Z (r30:r31) ponteiro para buffer
 ; ===================================================================
 
 .def R_DELAY = R18
@@ -105,4 +100,64 @@ loop_ms:
 delay_us:
     DEC R_DELAY     ; 1 ciclos
     BRNE delay_us   ; se pula 2 ciclos, se nao 1 ciclo, se repete 256 vezes
+    RET
+
+; ===========================================================================
+; DHT11_CheckResponse — handshake com o sensor
+; ===========================================================================
+
+DHT11_CheckResponse:
+    ; espera sensor puxar LOW (~80 us) ---
+    LDI TEMP, DHT11_MAX_TIMEOUT
+
+espera_low1:
+    IN AUX, PIN_DHT
+    SBRS AUX, BIT_DHT           ; pula próxima se bit = 1
+    RJMP low1_ok                ; está LOW -> proximo passo
+    ; ainda HIGH
+    LDI R_DELAY, us1
+    RCALL delay_us
+
+    DEC TEMP
+    BREQ error                  ; timeout esgotado
+    RJMP espera_low1
+
+low1_ok:
+    ; espera sensor puxar HIGH (~80 us)
+    LDI TEMP, DHT11_MAX_TIMEOUT
+
+espera_high:
+    IN AUX, PIN_DHT
+    SBRC AUX, BIT_DHT           ; pula se bit = 0 (ainda LOW)
+    RJMP high_ok                ; está HIGH, proximo passo
+    ; ainda LOW
+    LDI R_DELAY, us1
+    RCALL delay_us
+
+    DEC TEMP
+    BREQ error                  ; timeout esgotado
+    RJMP espera_high
+
+high_ok:
+    ; espera sensor puxar LOW novamente
+    LDI TEMP, DHT11_MAX_TIMEOUT
+
+espera_low2:
+    IN AUX, PIN_DHT
+    SBRS R16, BIT_DHT           ; pula se bit = 1 (ainda HIGH)
+    RJMP low2_ok                ; está LOW, handshake ok
+    ; ainda HIGH
+    LDI R_DELAY, us1
+    RCALL delay_us
+
+    DEC  TEMP
+    BREQ error
+    RJMP espera_low2
+
+low2_ok:
+    LDI  R24, 1                 ; retorno = 1 (sucesso)
+    RET
+
+error:
+    LDI  R24, 0                 ; retorno = 0 (erro)
     RET
