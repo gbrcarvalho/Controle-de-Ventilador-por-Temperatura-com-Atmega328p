@@ -98,16 +98,18 @@ Mostra:
     RET
 
 Atraso:
-    LDI ATRASO1, 0
-    LDI ATRASO2, 0
-    LDI ATRASO3, 1
+    PUSH R18
+    LDI AUX, 0
+    LDI TEMP, 0
+    LDI R18, 1
 volta:
-    DEC ATRASO1
+    DEC AUX
     BRNE volta
-    DEC ATRASO2
+    DEC TEMP
     BRNE volta
-    DEC ATRASO3
+    DEC R18
     BRNE volta
+    POP R18
     RET
 
 Tabela: .dw 0x7940, 0x3024, 0x1219, 0x7802, 0x1800, 0x0308, 0x2146, 0x0E06

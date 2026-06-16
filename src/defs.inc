@@ -6,10 +6,6 @@
 ; =============DEFINIÇÕES DISPLAY==============================================
 .def CNTRL = R20
 
-.def ATRASO1 = R21
-.def ATRASO2 = R22
-.def ATRASO3 = R23
-
 .equ SYMB_CELS = 0x0C         ; define o simbolo que representa a grandeza fisica
 
 .equ PORT_DISPLAY = PORTB     ; define a porta de saida dos displays
@@ -34,8 +30,8 @@
 ; ==============================================================================
 
 ; teste
-.def DECIMO = R24
-.def UNIDADE = R25
-.def DEZENA = R26
+.def DECIMO = R21
+.def UNIDADE = R22
+.def DEZENA = R23
 ;
 
