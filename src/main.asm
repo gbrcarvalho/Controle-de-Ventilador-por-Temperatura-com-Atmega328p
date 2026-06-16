@@ -26,6 +26,7 @@ RJMP Inicio
 .ORG 0x0034         ; endereço após o último vetor do 328P
 .include "display.asm"
 .include "timer.asm"
+.include "dht11.asm"
 
 Inicio:
     ; inicializa a pilha
@@ -43,6 +44,8 @@ Inicio:
     LDI DEZENA, 0 ; valor que será incrementado continuamente - teste
     RCALL Inicializa_Display
     RCALL Timer1_Init
+
+    RCALL DHT11_Start
 
 Main:
     STS digi_1, DEZENA

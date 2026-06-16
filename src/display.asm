@@ -21,15 +21,19 @@ Inicializa_Display:
     LDI AUX, 0xff
     OUT DDR_DISPLAY, AUX
 
-    ; Configura saidas de controle
-    LDI AUX, INIT_DDR_CONTROLE
+    ; Configura saidas de controle, sem mexer nos outros pinos
+    IN AUX, DDR_CONTROLE
+    ORI AUX, INIT_DDR_CONTROLE
     OUT DDR_CONTROLE, AUX
 
     ; Desliga os displays
     LDI AUX, 0xff
     OUT PORT_DISPLAY, AUX
-    LDI AUX, 0x00
+
+    IN AUX, PORT_CONTROLE
+    ANDI AUX, MASK_CONTROLE
     OUT PORT_CONTROLE, AUX
+
     RET
 
 Exibe_Display:
@@ -94,7 +98,10 @@ Mostra:
     ; Mostra o valor de R1 no display
     OUT PORT_DISPLAY, R1
     ; Configura para só ter energia em CNTRL (ou seja, só liga o pino de um dos displays)
-    OUT PORT_CONTROLE, CNTRL
+    IN TEMP, PORT_CONTROLE
+    ANDI TEMP, MASK_CONTROLE
+    OR TEMP, CNTRL
+    OUT PORT_CONTROLE, TEMP
     RET
 
 Atraso:
