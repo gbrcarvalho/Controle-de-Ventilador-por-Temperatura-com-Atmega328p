@@ -46,20 +46,6 @@ Inicio:
     RCALL Inicializa_Display
     RCALL Timer1_Init
 
-    RCALL DHT11_Read
-    CPI R24, 0xFF
-    BREQ Fim
-
-    CPI R24, 0xFE
-    BREQ Fim
-
-    CPI R24, 0xFD
-    BREQ Fim
-
-    LDS R24, dht_temperature_int
-    OUT PORTD, R24
-
-    RJMP Main
 
 Erro:
     IN AUX, PORTD
@@ -75,12 +61,28 @@ Main:
 
     LDS AUX, FLAG_DHT
     CPI AUX, 1
-    BREQ inverte_portd0
+    BREQ Le_DHT;inverte_portd0
 
 ; teste, codigo fica incrementando o valor
     INC DECIMO
     CPI DECIMO, 10
     BREQ vai_um_unidade
+    RJMP Main
+
+Le_DHT:
+    RCALL DHT11_Read
+    CPI R24, 0xFF
+    BREQ Fim
+
+    CPI R24, 0xFE
+    BREQ Fim
+
+    CPI R24, 0xFD
+    BREQ Fim
+
+    LDS R24, dht_temperature_int
+    OUT PORTD, R24
+
     RJMP Main
 
 vai_um_unidade:
