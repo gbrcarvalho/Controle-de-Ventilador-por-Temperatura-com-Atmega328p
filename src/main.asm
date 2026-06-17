@@ -6,8 +6,8 @@
 ;  Equipe:
 ;  Gabriel Silva Carvalho
 ;  Leonardo de Andrade Porto
-;  Davi Reis
-;  Davi
+;  Davi Reis Santos da Silva
+;  Davi Dias de Carvalho
 ;  Clock do CPU: 16.000.000 Hz
 ; --------------------------------------------
 

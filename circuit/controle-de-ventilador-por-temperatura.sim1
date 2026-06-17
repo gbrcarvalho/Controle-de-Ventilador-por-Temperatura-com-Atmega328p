@@ -56,7 +56,7 @@
 
 <item itemtype="Resistor" CircId="Resistor-365" mainComp="false" ShowProp="Resistance" Show_id="true" Show_Val="true" Pos="116,40" rotation="90" hflip="1" vflip="1" label="Carga" idLabPos="-12,-33" labelrot="0" valLabPos="-10,-19" valLabRot="0" Resistance="100 Ω" />
 
-<item itemtype="TextComponent" CircId="TextComponent-582" mainComp="false" Show_id="true" Show_Val="false" Pos="-520,-160" rotation="0" hflip="1" vflip="1" label="Controle de Ventilador por Temperatura" idLabPos="16,-44" labelrot="0" valLabPos="-16,20" valLabRot="0" Margin="5 _Pixels" Border="1 _Pixels" Opacity="1" Font="Helvetica [Cronyx]" Font_Size="10 _Pixels" Fixed_Width="true" Text="Projeto Final MATA49 - T2&#xa;Programação de Software Básico&#xa;Equipe:&#xa;Gabriel Silva Carvalho&#xa;Leonardo de Andrade Porto&#xa;Davi Reis&#xa;Davi" />
+<item itemtype="TextComponent" CircId="TextComponent-582" mainComp="false" Show_id="true" Show_Val="false" Pos="-520,-160" rotation="0" hflip="1" vflip="1" label="Controle de Ventilador por Temperatura" idLabPos="16,-44" labelrot="0" valLabPos="-16,20" valLabRot="0" Margin="5 _Pixels" Border="1 _Pixels" Opacity="1" Font="Helvetica [Cronyx]" Font_Size="10 _Pixels" Fixed_Width="true" Text="Projeto Final MATA49 - T2&#xa;Programação de Software Básico&#xa;Equipe:&#xa;Gabriel Silva Carvalho&#xa;Leonardo de Andrade Porto&#xa;Davi Reis Santos da Silva&#xa;Davi Dias de Carvalho" />
 
 <item itemtype="Ground" CircId="Ground-217" mainComp="false" Show_id="false" Show_Val="false" Pos="100,108" rotation="0" hflip="1" vflip="1" label="Ground-217" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 
