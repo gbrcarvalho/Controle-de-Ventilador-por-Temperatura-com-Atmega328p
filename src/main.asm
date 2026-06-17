@@ -24,7 +24,7 @@ RJMP Inicio
     RJMP ISR_Timer1
 
 .ORG 0x0034         ; endereço após o último vetor do 328P
-.include "display.asm"
+.include "display-5461as.asm"
 .include "timer.asm"
 .include "delay.asm"
 .include "dht11.asm"
@@ -36,10 +36,16 @@ Inicio:
     LDI AUX, LOW(RAMEND)
     OUT SPL, AUX
 
-    LDI AUX, 0xFF
-    OUT DDRD, AUX
-    LDI AUX, 0x00
-    OUT PORTD, AUX
+    LDI AUX, 0x00                 ; necessario desligar a serial para nao interferir com o PD0/PD1
+    STS UCSR0B, AUX               ; desliga a serial escrevendo 0 em UCSR0B
+
+    IN AUX, DDRC                  ; seta a porta pc5 como saida para controlar o rele
+    ORI AUX, (1 << PC5)
+    OUT DDRC, AUX
+
+    IN AUX, PORTC                  ; limpa a porta pc5
+    ANDI AUX, ~(1 << PC5)
+    OUT PORTC, AUX
 
     LDI DECIMO, 0
     LDI UNIDADE, 0
@@ -137,12 +143,13 @@ Fim_Divisao:
 ; =========================================================
 
 Liga_Rele:
-    SBI PORTD, PD0
+    SBI PORTC, PC5
     RET
 
 Desliga_Rele:
-    CBI PORTD, PD0
+    CBI PORTC, PC5
     RET
 
 Fim:
-    OUT PORTD, R24
+    ;OUT PORTD, R24
+    RJMP Fim

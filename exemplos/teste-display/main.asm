@@ -17,7 +17,7 @@
 RJMP Inicio
 
 .ORG 0x0034         ; endereço após o último vetor do 328P
-.include "display.asm"
+.include "display-5461as.asm"
 
 Inicio:
     ; inicializa a pilha
