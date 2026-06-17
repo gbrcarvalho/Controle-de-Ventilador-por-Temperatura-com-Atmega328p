@@ -1,5 +1,5 @@
 ; ==================================================================
-; dht11.asm — Driver DHT11 em Assembly AVR (ATmega328P)
+; dht11.asm - Driver DHT11 em Assembly AVR (ATmega328P)
 ; ===================================================================
 
 .def R_DELAY = R18
@@ -16,6 +16,7 @@
 .equ ms100 = ms_98_53
 .equ ms20 = ms_24_63
 .equ us30 = us_30_8
+.equ us40 = us_41_9
 .equ us1 = us_1_06
 
 .equ DDR_DHT = DDRC
@@ -32,17 +33,13 @@ dht_humidity_int:    .byte 1
 dht_humidity_dec:    .byte 1
 dht_temperature_int: .byte 1
 dht_temperature_dec: .byte 1
-dht_error:           .byte 1
-
-; buffer interno de 5 bytes (uso interno de DHT11_Read)
-
-dht_buffer:          .byte 5
 
 .CSEG
 
 ; =====================================================================
 ; DHT11_Start - emite o pulso de start para o sensor
 ; =====================================================================
+
 DHT11_Start:
     ; garante HIGH antes de configurar saída
     IN AUX, PORT_DHT
@@ -103,7 +100,7 @@ delay_us:
     RET
 
 ; ===========================================================================
-; DHT11_CheckResponse — handshake com o sensor
+; DHT11_CheckResponse - handshake com o sensor
 ; ===========================================================================
 
 DHT11_CheckResponse:
@@ -144,20 +141,135 @@ high_ok:
 
 espera_low2:
     IN AUX, PIN_DHT
-    SBRS R16, BIT_DHT           ; pula se bit = 1 (ainda HIGH)
+    SBRS AUX, BIT_DHT           ; pula se bit = 1 (ainda HIGH)
     RJMP low2_ok                ; está LOW, handshake ok
     ; ainda HIGH
     LDI R_DELAY, us1
     RCALL delay_us
 
-    DEC  TEMP
+    DEC TEMP
     BREQ error
     RJMP espera_low2
 
 low2_ok:
-    LDI  R24, 1                 ; retorno = 1 (sucesso)
+    LDI R24, 1                 ; retorno = 1 (sucesso)
     RET
 
 error:
-    LDI  R24, 0                 ; retorno = 0 (erro)
+    LDI R24, 0                 ; retorno = 0 (erro)
+    RET
+
+; ===========================================================================
+; DHT11_ReadByte - le um byte do sensor
+; ===========================================================================
+
+DHT11_ReadByte:
+    LDI R24, 0                     ; resultado
+    LDI R19, 8                     ; i = 8
+    LDI R21, 0b10000000            ; auxiliar usado para ligar os bits
+rb_for_loop:
+    LDI TEMP, DHT11_MAX_TIMEOUT      ; seta timeout
+rb_espera_high:                    ; ~50us em low
+    IN AUX, PIN_DHT
+    SBRC AUX, BIT_DHT              ; pula se bit = 0 (ainda LOW)
+    RJMP rb_high_ok                ; está HIGH, sai do loop
+    ; ainda LOW
+    DEC TEMP                       ; dec timeout
+    BREQ rb_error                  ; se timeout igual a zero pula para retorno erro
+    RJMP rb_espera_high            ; enquanto o pino estiver em 0 fica esperando
+
+rb_high_ok:
+    ; espera _delay_us(40)
+    LDI R_DELAY, us40
+    RCALL delay_us
+    ; depois de 40us verifica se o pino esta em 1
+    IN AUX, PIN_DHT
+    SBRS AUX, BIT_DHT
+    RJMP rb_for_count              ; se nao pula para o fim do loop
+    ; se sim:
+    ; seta o bit correspondente em resultado(r24)
+    OR R24, R21                    ; se for 1, seta o bit 7, bit 6, bit 5 ...
+
+    ; espera baixar
+    LDI TEMP, DHT11_MAX_TIMEOUT      ; seta timeout
+rb_espera_low:                     ; espera o bit 1 terminar
+    IN AUX, PIN_DHT
+    SBRS AUX, BIT_DHT              ; pula se bit = 1 (ainda HIGH)
+    RJMP rb_for_count              ; está LOW, sai do loop
+    ; ainda LOW
+    DEC TEMP                       ; dec timeout
+    BREQ rb_error                  ; se timeout igual a zero pula para retorno erro
+    RJMP rb_espera_low             ; enquanto o pino estiver em 1 fica esperando
+rb_for_count:
+    LSR R21                        ; desloca para a direita
+    DEC R19                        ; decrementa r19
+    BREQ rb_for_end                ; quando r19 chegar em 0 sai do for loop
+    RJMP rb_for_loop               ; enquanto nao chegar repete o for loop
+rb_for_end:
+    RET
+
+rb_error:
+    LDI R24, 0
+    RET
+
+; ===========================================================================
+; DHT11_Read - inicia transmissao, handshake e leitura dos bytes
+; ===========================================================================
+
+DHT11_Read:
+    RCALL DHT11_Start
+
+    CLI                          ; desabilita interrupções
+
+    RCALL DHT11_CheckResponse
+    CPI R24, 0
+    BREQ handshake_erro
+
+    RCALL DHT11_ReadByte         ; umidade int
+    MOV R28, R24
+
+    RCALL DHT11_ReadByte         ; umidade dec
+    MOV R27, R24
+
+    RCALL DHT11_ReadByte         ; temperatura int
+    MOV R26, R24
+
+    RCALL DHT11_ReadByte         ; temperatura dec
+    MOV R25, R24
+
+    RCALL DHT11_ReadByte         ; checksum
+
+    MOV R19, R28
+    ADD R19, R27
+    ADD R19, R26
+    ADD R19, R25
+
+    CPI R24, 0                 ; verifica se o checksum recebido e igual a 0
+    BREQ checksum_erro_1
+
+    CP R19, R24                ; verifica se o acumulado em r19 e igual ao checksum
+    BRNE checksum_erro_2
+
+    STS dht_humidity_int, R28
+    STS dht_humidity_dec, R27
+    STS dht_temperature_int, R26
+    STS dht_temperature_dec, R25
+
+    SEI                          ; reabilita interrupções
+    LDI R24, 0x01
+    RET
+
+handshake_erro:
+    SEI
+    LDI R24, 0xFF
+    RET
+
+checksum_erro_1:
+    SEI
+    LDI R24, 0xFE
+    RET
+
+checksum_erro_2:
+    SEI
+    LDI R24, 0xFD
     RET

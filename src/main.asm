@@ -37,7 +37,7 @@ Inicio:
 
     LDI AUX, 0xFF
     OUT DDRD, AUX
-    LDI AUX, 0x01
+    LDI AUX, 0x00
     OUT PORTD, AUX
 
     LDI DECIMO, 0 ; valor que será incrementado continuamente - teste
@@ -46,14 +46,24 @@ Inicio:
     RCALL Inicializa_Display
     RCALL Timer1_Init
 
-    RCALL DHT11_Start
-    RCALL DHT11_CheckResponse
+    RCALL DHT11_Read
+    CPI R24, 0xFF
+    BREQ Fim
 
-    CPI R24, 1
-    BREQ Main
+    CPI R24, 0xFE
+    BREQ Fim
 
+    CPI R24, 0xFD
+    BREQ Fim
+
+    LDS R24, dht_temperature_int
+    OUT PORTD, R24
+
+    RJMP Main
+
+Erro:
     IN AUX, PORTD
-    ORI AUX, (1 << PD1)
+    ORI AUX, (1 << PD7)
     OUT PORTD, AUX
 
 Main:
@@ -99,7 +109,10 @@ inverte_portd0:
     IN   AUX, PORTD
     LDI  TEMP, 1
     EOR  AUX, TEMP
-    OUT  PORTD, AUX
+    ;OUT  PORTD, AUX
     LDI  AUX, 0
     STS  FLAG_DHT, AUX
     RJMP Main
+
+Fim:
+    OUT PORTD, R24
