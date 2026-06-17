@@ -2,17 +2,6 @@
 ; dht11.asm - Driver DHT11 em Assembly AVR (ATmega328P)
 ; ===================================================================
 
-.def R_DELAY = R18
-
-.equ ms_98_53 = 8 ;
-.equ ms_110_2 = 9 ;
-.equ ms_24_63 = 2 ;
-.equ ms_12_31 = 1 ;
-
-.equ us_1_06 = 2 ;
-.equ us_30_8 = 160 ;
-.equ us_41_9 = 220 ;
-
 .equ ms100 = ms_98_53
 .equ ms20 = ms_24_63
 .equ us30 = us_30_8
@@ -38,66 +27,58 @@ dht_temperature_dec: .byte 1
 
 ; =====================================================================
 ; DHT11_Start - emite o pulso de start para o sensor
+; essa função faz uso dos registradores:
+;
+; R16: AUX
+; R18: R_DELAY
+;
+; I/O:
+; PORTX: PORT_DHT
+; DDRX: DDRX_DHT
+; BITX: BIT_DHT
 ; =====================================================================
 
 DHT11_Start:
-    ; garante HIGH antes de configurar saída
-    IN AUX, PORT_DHT
-    ORI AUX, (1 << BIT_DHT)
-    OUT PORT_DHT, AUX
+    ; garante HIGH no pino do sensor antes de configurar saída
+    IN AUX, PORT_DHT                ; le o valor que esta no PORT, salva em AUX
+    ORI AUX, (1 << BIT_DHT)         ; seta somente o bit desejado, os outros permanecem inalterados, em AUX
+    OUT PORT_DHT, AUX               ; carrega o valor de AUX em PORT
 
-    ; configura como saída
-    IN AUX, DDR_DHT
-    ORI AUX, (1 << BIT_DHT)
-    OUT DDR_DHT, AUX
+    ; configura o pino do sensor como saída
+    IN AUX, DDR_DHT                 ; le o valor que esta no DDR, salva em AUX
+    ORI AUX, (1 << BIT_DHT)         ; seta somente o bit desejado, os outros permanecem inalterados, em AUX
+    OUT DDR_DHT, AUX                ; carrega o valor de AUX em DDR
 
-    LDI R_DELAY, ms100
-    RCALL delay_ms
+    LDI R_DELAY, ms100              ; carrega o valor no registrador para determinar o delay de 100 ms
+    RCALL delay_ms                  ; chama a função para esperar 100 ms
 
-    ; puxa linha para LOW (sinal de start)
-    IN AUX, PORT_DHT
-    ANDI AUX, ~(1 << BIT_DHT)
-    OUT PORT_DHT, AUX
+    ; mcu puxa linha para LOW (sinal de start)
+    IN AUX, PORT_DHT                ; le o valor que esta no PORT, salva em AUX
+    ANDI AUX, ~(1 << BIT_DHT)       ; limpa somente o bit desejado, os outros permanecem inalterados, em AUX
+    OUT PORT_DHT, AUX               ; carrega o valor de AUX em PORT
 
-    LDI R_DELAY, ms20
-    RCALL delay_ms
+    LDI R_DELAY, ms20               ; carrega o valor no registrador para determinar o delay de 20 ms
+    RCALL delay_ms                  ; chama a função para esperar 20 ms
 
-    ; libera barramento (HIGH)
-    IN AUX, PORT_DHT
-    ORI AUX, (1 << BIT_DHT)
-    OUT PORT_DHT, AUX
+    ; mcu libera barramento puxando para HIGH
+    IN AUX, PORT_DHT                ; le o valor que esta no PORT, salva em AUX
+    ORI AUX, (1 << BIT_DHT)         ; seta somente o bit desejado, os outros permanecem inalterados, em AUX
+    OUT PORT_DHT, AUX               ; carrega o valor de AUX em PORT
 
-    LDI R_DELAY, us30
-    RCALL delay_us
+    LDI R_DELAY, us30               ; carrega o valor no registrador para determinar o delay de 30 us
+    RCALL delay_us                  ; chama a função para esperar 30 us
 
-    ; configura como entrada para ouvir o sensor
-    IN AUX, DDR_DHT
-    ANDI AUX, ~(1 << BIT_DHT)
-    OUT DDR_DHT, AUX
+    ; configura o pino como entrada para ouvir o sensor
+    IN AUX, DDR_DHT                 ; le o valor que esta no DDR, salva em AUX
+    ANDI AUX, ~(1 << BIT_DHT)       ; limpa somente o bit desejado, os outros permanecem inalterados, em AUX
+    OUT DDR_DHT, AUX                ; carrega o valor de AUX em DDR
 
-    ; ativa pull-up interno
-    IN AUX, PORT_DHT
-    ORI AUX, (1 << BIT_DHT)
-    OUT PORT_DHT, AUX
+    ; ativa pull-up interno no pino do sensor
+    IN AUX, PORT_DHT                ; le o valor que esta no PORT, salva em AUX
+    ORI AUX, (1 << BIT_DHT)         ; seta somente o bit desejado, os outros permanecem inalterados, em AUX
+    OUT PORT_DHT, AUX               ; carrega o valor de AUX em PORT
 
-    RET
-
-delay_ms:
-    LDI R16, 0
-    LDI R17, 0
-loop_ms:
-    DEC R16           ; 1 ciclos
-    BRNE loop_ms   ; se pula 2 ciclos, se nao 1 ciclo, se repete 256 vezes
-    DEC R17
-    BRNE loop_ms   ; se repete 256 vezes
-    DEC R_DELAY
-    BRNE loop_ms
-    RET
-
-delay_us:
-    DEC R_DELAY     ; 1 ciclos
-    BRNE delay_us   ; se pula 2 ciclos, se nao 1 ciclo, se repete 256 vezes
-    RET
+    RET                             ; retorna
 
 ; ===========================================================================
 ; DHT11_CheckResponse - handshake com o sensor

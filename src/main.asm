@@ -26,6 +26,7 @@ RJMP Inicio
 .ORG 0x0034         ; endereço após o último vetor do 328P
 .include "display.asm"
 .include "timer.asm"
+.include "delay.asm"
 .include "dht11.asm"
 
 Inicio:
