@@ -12,6 +12,24 @@
 .equ PORT_DHT = PORTC
 .equ PIN_DHT = PINC
 .equ BIT_DHT = PC0
+.equ HANDSHAKE_ERROR = 0xFF
+.equ RECV_CHECKSUM_ERROR = 0xFE
+.equ CALC_CHECKSUM_ERROR = 0xFD
+
+handshake_erro:
+    SEI
+    LDI R24, 0xFF
+    RET
+
+checksum_erro_1:
+    SEI
+    LDI R24, 0xFE
+    RET
+
+checksum_erro_2:
+    SEI
+    LDI R24, 0xFD
+    RET
 
 .equ DHT11_MAX_TIMEOUT = 255
 
@@ -30,7 +48,7 @@ dht_temperature_dec: .byte 1
 ; essa função faz uso dos registradores:
 ;
 ; R16: AUX
-; R18: R_DELAY
+; R25: R_DELAY
 ;
 ; I/O:
 ; PORTX: PORT_DHT
@@ -204,7 +222,7 @@ DHT11_Read:
 
     RCALL DHT11_CheckResponse
     CPI R24, 0
-    BREQ handshake_erro
+    BREQ trata_handshake_error
 
     RCALL DHT11_ReadByte         ; umidade int
     MOV R28, R24
@@ -225,11 +243,11 @@ DHT11_Read:
     ADD R19, R26
     ADD R19, R25
 
-    CPI R24, 0                 ; verifica se o checksum recebido e igual a 0
-    BREQ checksum_erro_1
+    CPI R24, 0                   ; verifica se o checksum recebido e igual a 0
+    BREQ trata_recv_checksum_error
 
-    CP R19, R24                ; verifica se o acumulado em r19 e igual ao checksum
-    BRNE checksum_erro_2
+    CP R19, R24                  ; verifica se o acumulado em r19 e igual ao checksum
+    BRNE trata_calc_checksum_error
 
     STS dht_humidity_int, R28
     STS dht_humidity_dec, R27
@@ -240,17 +258,17 @@ DHT11_Read:
     LDI R24, 0x01
     RET
 
-handshake_erro:
+trata_handshake_error:
     SEI
-    LDI R24, 0xFF
+    LDI R24, HANDSHAKE_ERROR
     RET
 
-checksum_erro_1:
+trata_recv_checksum_error:
     SEI
-    LDI R24, 0xFE
+    LDI R24, RECV_CHECKSUM_ERROR
     RET
 
-checksum_erro_2:
+trata_calc_checksum_error:
     SEI
-    LDI R24, 0xFD
+    LDI R24, CALC_CHECKSUM_ERROR
     RET

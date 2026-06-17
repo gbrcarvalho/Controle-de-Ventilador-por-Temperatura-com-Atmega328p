@@ -5,6 +5,9 @@
 
 ; =============DEFINIÇÕES DISPLAY==============================================
 .def CNTRL = R20
+.def DECIMO = R21
+.def UNIDADE = R22
+.def DEZENA = R23
 
 .equ SYMB_CELS = 0x0C         ; define o simbolo que representa a grandeza fisica
 
@@ -31,13 +34,7 @@
 ; ==============================================================================
 
 ; =============DEFINIÇÕES RELE==================================================
-.equ TEMP_LIMITE = 28
+.equ TEMP_LIMITE_BAIXO = 26
+.equ TEMP_LIMITE_ALTO = 28
 
 ; ==============================================================================
-
-; teste
-.def DECIMO = R21
-.def UNIDADE = R22
-.def DEZENA = R23
-;
-

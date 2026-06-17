@@ -41,9 +41,9 @@ Inicio:
     LDI AUX, 0x00
     OUT PORTD, AUX
 
-    LDI DECIMO, 0 ; valor que será incrementado continuamente - teste
-    LDI UNIDADE, 0 ; valor que será incrementado continuamente - teste
-    LDI DEZENA, 0 ; valor que será incrementado continuamente - teste
+    LDI DECIMO, 0
+    LDI UNIDADE, 0
+    LDI DEZENA, 0
     RCALL Inicializa_Display
     RCALL Timer1_Init
 
@@ -85,15 +85,21 @@ Realiza_Leitura_DHT:
 ; CONTROLE DO RELÉ
 ; Liga se temperatura >= TEMP_LIMITE
 ; =====================================================
-    CPI TEMP, TEMP_LIMITE
+    CPI TEMP, TEMP_LIMITE_BAIXO
     BRLO Temperatura_Baixa
 
-    RCALL Liga_Rele
+    CPI TEMP, TEMP_LIMITE_ALTO
+    BRGE Temperatura_Alta
 
+    RJMP Continua_Leitura
+
+    Temperatura_Alta:
+    RCALL Liga_Rele
     RJMP Continua_Leitura
 
     Temperatura_Baixa:
     RCALL Desliga_Rele
+    RJMP Continua_Leitura
 
 ; =====================================================
 ; CONVERSÃO PARA EXIBIÇÃO

@@ -2,7 +2,7 @@
 ; delay_ms
 ;
 ; R16: AUX
-; R18: R_DELAY
+; R25: R_DELAY
 ;
 ; I/O:
 ; PORTX: PORT_DHT
