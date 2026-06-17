@@ -80,6 +80,25 @@ Realiza_Leitura_DHT:
     ; se deu certo,  extrair os números
     ; Pega a parte inteira da temperatura (Ex: 27°C = 0x1B)
     LDS  TEMP, dht_temperature_int
+
+; =====================================================
+; CONTROLE DO RELÉ
+; Liga se temperatura >= TEMP_LIMITE
+; =====================================================
+    CPI TEMP, TEMP_LIMITE
+    BRLO Temperatura_Baixa
+
+    RCALL Liga_Rele
+
+    RJMP Continua_Leitura
+
+    Temperatura_Baixa:
+    RCALL Desliga_Rele
+
+; =====================================================
+; CONVERSÃO PARA EXIBIÇÃO
+; =====================================================
+Continua_Leitura:
     RCALL Hex_Para_BCD_Temp
 
     ; 2. Pega a parte decimal
@@ -105,6 +124,18 @@ Fim_Divisao:
     ; Quando cai aqui, R18 tem a dezena e TEMP tem a unidade
     MOV DEZENA, R18
     MOV UNIDADE, TEMP
+    RET
+
+; =========================================================
+; CONTROLE DO RELÉ
+; =========================================================
+
+Liga_Rele:
+    SBI PORTD, PD0
+    RET
+
+Desliga_Rele:
+    CBI PORTD, PD0
     RET
 
 Fim:
