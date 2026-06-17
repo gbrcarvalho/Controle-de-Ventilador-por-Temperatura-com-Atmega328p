@@ -47,12 +47,6 @@ Inicio:
     RCALL Inicializa_Display
     RCALL Timer1_Init
 
-
-Erro:
-    IN AUX, PORTD
-    ORI AUX, (1 << PD7)
-    OUT PORTD, AUX
-
 Main:
     STS digi_1, DEZENA
     STS digi_2, UNIDADE
@@ -60,62 +54,58 @@ Main:
 
     RCALL Exibe_Display
 
+    ; Verifica se o Timer1 tocou o alarme (Passaram 2 segundos?)
     LDS AUX, FLAG_DHT
     CPI AUX, 1
-    BREQ Le_DHT;inverte_portd0
+    BREQ Realiza_Leitura_DHT  ; Se sim, pula para ler o sensor
 
-; teste, codigo fica incrementando o valor
-    INC DECIMO
-    CPI DECIMO, 10
-    BREQ vai_um_unidade
+    ; Se não, volta pro início e continua piscando o display
     RJMP Main
 
-Le_DHT:
-    RCALL DHT11_Read
-    CPI R24, 0xFF
-    BREQ Fim
-
-    CPI R24, 0xFE
-    BREQ Fim
-
-    CPI R24, 0xFD
-    BREQ Fim
-
-    LDS R24, dht_temperature_int
-    OUT PORTD, R24
-
-    RJMP Main
-
-vai_um_unidade:
-    LDI DECIMO, 0
-    INC UNIDADE
-    CPI UNIDADE, 10
-    BREQ vai_um_dezena
-    RJMP Main
-
-vai_um_dezena:
-    LDI DECIMO, 0
-    LDI UNIDADE, 0
-    INC DEZENA
-    CPI DEZENA, 10
-    BREQ zera
-    RJMP Main
-
-zera:
-    LDI DECIMO, 0
-    LDI UNIDADE, 0
-    LDI DEZENA, 0
-    RJMP Main
-; apagar esse codigo de teste
-
-inverte_portd0:
-    IN   AUX, PORTD
-    LDI  TEMP, 1
-    EOR  AUX, TEMP
-    ;OUT  PORTD, AUX
+; =========================================================
+; ROTINA DE ATUALIZAÇÃO DO SENSOR (Chamada a cada 2 seg)
+; =========================================================
+Realiza_Leitura_DHT:
+    ; regra de segurança: Abaixar a flag imediatamente
     LDI  AUX, 0
     STS  FLAG_DHT, AUX
+
+    ; Chama a leitura física no pino
+    RCALL DHT11_Read
+
+    ; Verifica a leitura
+    CPI  R24, 0x01
+    BRNE Fim_Leitura ; Se deu erro (checksum, timeout), ignora e mantém a temperatura antiga na tela
+
+    ; se deu certo,  extrair os números
+    ; Pega a parte inteira da temperatura (Ex: 27°C = 0x1B)
+    LDS  TEMP, dht_temperature_int
+    RCALL Hex_Para_BCD_Temp
+
+    ; 2. Pega a parte decimal
+    LDS  TEMP, dht_temperature_dec
+    MOV  DECIMO, TEMP
+
+Fim_Leitura:
     RJMP Main
+
+; CONVERSÃO HEXADECIMAL PARA DECIMAL (BCD)
+Hex_Para_BCD_Temp:
+    LDI R18, 0           ; R18 será o nosso contador de dezenas
+
+Subtrai_10:
+    CPI TEMP, 10         ; O número atual é menor que 10?
+    BRLO Fim_Divisao     ; Se for menor (Branch if Lower), o que sobrou em TEMP é a UNIDADE!
+
+    SUBI TEMP, 10        ; Subtrai 10 da temperatura
+    INC R18              ; Conta +1 na dezena
+    RJMP Subtrai_10      ; Repete o laço
+
+Fim_Divisao:
+    ; Quando cai aqui, R18 tem a dezena e TEMP tem a unidade
+    MOV DEZENA, R18
+    MOV UNIDADE, TEMP
+    RET
 
 Fim:
     OUT PORTD, R24
